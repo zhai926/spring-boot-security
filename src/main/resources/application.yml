@@ -1,0 +1,12 @@
+server:
+  port: 8088
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+    encoding: utf-8
+  devtools:
+    restart:
+      enabled: true

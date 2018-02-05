@@ -14,7 +14,6 @@ public class Test {
 //                .formLogin()
 //                .usernameParameter("username")
 //                .passwordParameter("password")
-//                .loginProcessingUrl("/login")  // 自定义登录路径
 //                .loginPage("/login")  // 自定义页面路径
 //                .successHandler(
 //                        new AuthenticationSuccessHandler() {

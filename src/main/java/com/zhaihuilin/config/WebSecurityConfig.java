@@ -1,5 +1,8 @@
 package com.zhaihuilin.config;
 
+import com.google.gson.Gson;
+import com.zhaihuilin.entity.comment.RequestState;
+import com.zhaihuilin.entity.comment.ReturnMessages;
 import com.zhaihuilin.service.security.FreshDetailsService;
 import com.zhaihuilin.service.security.FreshFilterSecurityInterceptor;
 import com.zhaihuilin.utils.MD5Util;
@@ -10,11 +13,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.FindByIndexNameSessionRepository;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by SunHaiyang on 2017/8/4.
@@ -67,14 +80,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .anyRequest().permitAll().and()
                 .formLogin()
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .loginProcessingUrl("/login") // 自定义登录路劲
-                .loginPage("/login")   //自定义登录页面
-                .defaultSuccessUrl("/hello")   //自定义登录成功跳转的地址
+                .successHandler(
+                        new AuthenticationSuccessHandler() {
+                            @Override
+                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                                Gson gson = new Gson();
+                                ReturnMessages messages = new ReturnMessages(RequestState.SUCCESS, "登录成功。", null);
+                                response.setContentType("text/json;charset=utf-8");
+                                response.getWriter().write(gson.toJson(messages));
+                            }
+                        }
+                )
+                .failureHandler(new AuthenticationFailureHandler() {
+                    @Override
+                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+                        Gson gson = new Gson();
+                        ReturnMessages messages = new ReturnMessages(RequestState.ERROR, "用户名或密码错误。", null);
+                        httpServletResponse.setContentType("text/json;charset=utf-8");
+                        httpServletResponse.getWriter().write(gson.toJson(messages));
+                    }
+                })
                 .and()
                 .logout().logoutUrl("/logout").permitAll();
         http.addFilterBefore(freshFilterSecurityInterceptor, FilterSecurityInterceptor.class);
+        http.addFilterBefore(new KaptchaAuthenticationFilter("/login","/login?error"),UsernamePasswordAuthenticationFilter.class);
     }
 }
 

@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 获取 bean 工具类
  * Created by zhaihuilin on 2018/1/31  11:48.
  */
 @Configuration

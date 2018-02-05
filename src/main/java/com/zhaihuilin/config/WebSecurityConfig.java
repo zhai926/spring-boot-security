@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 安全框架
  * Created by SunHaiyang on 2017/8/4.
  */
 @Configuration

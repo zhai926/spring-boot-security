@@ -1,6 +1,8 @@
 package com.zhaihuilin.service;
 
 import com.zhaihuilin.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -51,4 +53,26 @@ public interface MemberService  {
      * @return  true|fasle
      */
     public boolean existMemberbyUsername(String username);
+
+    /**
+     * 分页查询
+     * @param member  用户
+     * @param pageable
+     * @return  Page<Member>
+     */
+    Page<Member>  findAllByMember(Member member, Pageable pageable);
+
+    /**
+     * 删除  逻辑删除
+     * @param memberId  用户编号
+     * @return
+     */
+    boolean deleteByMemberId(String memberId);
+
+    /**
+     * 物理删除
+     * @param memberId  用户编号
+     * @return
+     */
+    boolean physicallyDeleteByMemberId(String memberId );
 }

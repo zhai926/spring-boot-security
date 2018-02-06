@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 /**
- * Created by SunHaiyang on 2017/8/23.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 @Service
 public class ImageUploadServiceImpl implements ImageUploadService {

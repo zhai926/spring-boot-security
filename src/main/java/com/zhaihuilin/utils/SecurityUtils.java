@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 可以获取当前的登录用户名
  * Security简单的工具
- * Created by SunHaiyang on 2017/8/4.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 public class SecurityUtils {
 

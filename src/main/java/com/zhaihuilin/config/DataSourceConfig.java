@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 /**
  * 配置数据源
- * Created by zhaihuilin on 2017/10/24  12:12.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 @Configuration
 public class DataSourceConfig {
@@ -34,7 +34,7 @@ public class DataSourceConfig {
     @Bean
     @Primary
     public DataSource datasource(){
-        DruidDataSource dataSource = new DruidDataSource();
+        DruidDataSource dataSource = new DruidDataSource();  //阿里巴巴连接池
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);

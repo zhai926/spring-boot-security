@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 上传配置
- * Created by SunHaiyang on 2017/8/22.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 @Component
 public class UploadConfig {

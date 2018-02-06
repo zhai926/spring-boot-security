@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Created by SunHaiyang on 2017/8/22.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 @RestController
 public class UploadController {

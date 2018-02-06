@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 上传逻辑类
- * Created by SunHaiyang on 2017/8/22.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 public interface ImageUploadService {
 

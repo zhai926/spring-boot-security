@@ -17,12 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 /**
- * 权限判断
+ * 权限判断   授权
  * Created by SunHaiyang on 2017/8/4.
  */
 @Service
 @Log4j
 public class FreshAccessDecisionManager implements AccessDecisionManager {
+
+
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
         HttpServletRequest request = ((FilterInvocation)o).getHttpRequest();
@@ -30,6 +32,7 @@ public class FreshAccessDecisionManager implements AccessDecisionManager {
             return;
         }
         String url,method,roleCode;
+        //循环认证实体所拥有的权限列表
         for (GrantedAuthority grantedAuthority : authentication.getAuthorities()){
             if (grantedAuthority instanceof FreshGranteAuthority){
                 FreshGranteAuthority freshGranteAuthority = (FreshGranteAuthority)grantedAuthority;
@@ -63,7 +66,7 @@ public class FreshAccessDecisionManager implements AccessDecisionManager {
     }
 
     /**
-     * 判断是公开接口
+     * 判断是公开接口  说白了就是不用登陆就可以访问的url
      * @param request
      * @return
      */
@@ -116,6 +119,11 @@ public class FreshAccessDecisionManager implements AccessDecisionManager {
         return false;
     }
 
+    /**
+     * 此处必须设置为true
+     * @param aClass
+     * @return
+     */
     @Override
     public boolean supports(Class<?> aClass) {
         return true;

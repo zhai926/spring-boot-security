@@ -15,7 +15,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by HuangXueheng on 2017/9/4.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  * 用户信息实体类
  */
 @Entity

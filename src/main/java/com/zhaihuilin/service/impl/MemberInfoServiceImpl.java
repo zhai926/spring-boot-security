@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 用户配置信息 逻辑层
- * Created by HuangXueheng on 2017/9/19.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 @Transactional
 @Service

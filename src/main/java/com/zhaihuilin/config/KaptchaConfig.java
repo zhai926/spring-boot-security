@@ -9,7 +9,7 @@ import java.util.Properties;
 
 /**
  * 验证码配置
- * Created by zhaihuilin on 2017/10/24  12:12.
+ *Created by zhaihuilin on 2018/1/31  9:50.
  */
 @Configuration
 public class KaptchaConfig {

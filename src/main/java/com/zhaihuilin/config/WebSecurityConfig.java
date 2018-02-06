@@ -30,8 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * WebSecurityConfigurerAdapter 提供了一种便利的方式去创建 WebSecurityConfigurer的实例，只需要重写     WebSecurityConfigurerAdapter 的方法，即可配置拦截什么URL、设置什么权限等安全控制。
  * 安全框架
- * Created by SunHaiyang on 2017/8/4.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 @Configuration
 @Log4j
@@ -72,7 +73,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
+     *  SecurityContextPersistenceFilter：创建安全上下文SecurityContext
+     *  UsernamePasswordAuthenticationFilter：完成认证处理，并把认证通过的实体保存到SecurityContext中
+     *  FilterSecurityInterceptor：完成授权处理
      *
+     *  SecurityContextPersistenceFilter: 创建一个无认证实体的【SecurityContext】并在filter返回时持久到session 中
+     *  ------------> UsernamePasswordAuthenticationFilter : 拦截 j_spring_security_check 获取的登录信息 构造 UsernamePasswordAuthenticationToken 把具体的认证工作交给 AuthenticationManager  然后把 认证通过的的实体保存到 SecurityContext 中
+     *  ------------> FilterSecurityInterceptor：进行封装 request  response 为 【FilterInvocation】 根据 request 的 url 获取权限配置 【ConfigAttribute】 集合 从 SecurityContext 提取认证的实体信息 然后把具体的授权的工作 交给 【AccessDecisionManager】来完成  而 AccessDecisionManager 来通过 AffirmativeBased（决策管理器）
+—     *
+     * 认证过程：
+     * AuthenticationFilter --------->AuthenticationManager --------->AuthenticationProvider ----------> UserDetailsService
+     * 授权过程：
+     * FilterSecurityInterceptor ——————> AccessDecisionManager ——————> AccessDecisionVoter
      * @param http
      * @throws Exception
      */

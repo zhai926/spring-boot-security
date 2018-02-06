@@ -113,6 +113,8 @@ public class MemberInfoController {
      * @param graduatedFrom 用户毕业学校 [可空]
      * @param workUnit 用户工作单位 [可空]
      * @param blood 用户血型 [可空]
+     * @param roleIds 角色编号
+     * @param  state   状态
      * @return
      */
     @PostMapping(value = "/memberInfo/save")

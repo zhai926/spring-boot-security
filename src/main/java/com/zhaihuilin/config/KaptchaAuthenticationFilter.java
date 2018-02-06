@@ -22,7 +22,7 @@ import java.io.IOException;
 
 /**
  * 验证码拦截
- * Created by SunHaiyang on 2017/9/29.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 public class KaptchaAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -33,6 +33,7 @@ public class KaptchaAuthenticationFilter extends AbstractAuthenticationProcessin
     public KaptchaAuthenticationFilter(String servletPath, String failureUrl) {
         super(servletPath);
         this.servletPath=servletPath;
+        //用于处理失败的身份验证尝试的策略。
         setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(failureUrl));
 
     }

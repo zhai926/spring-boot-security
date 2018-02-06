@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * 用户配置信息 服务层
- * Created by HuangXueheng on 2017/9/19.
+ * Created by zhaihuilin on 2018/1/31  9:50.
  */
 public interface MemberInfoService {
 

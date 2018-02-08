@@ -1,8 +1,5 @@
 package com.zhaihuilin.config;
 
-import com.google.gson.Gson;
-import com.zhaihuilin.entity.comment.RequestState;
-import com.zhaihuilin.entity.comment.ReturnMessages;
 import com.zhaihuilin.service.security.FreshDetailsService;
 import com.zhaihuilin.service.security.FreshFilterSecurityInterceptor;
 import com.zhaihuilin.utils.MD5Util;
@@ -13,21 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.FindByIndexNameSessionRepository;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * WebSecurityConfigurerAdapter 提供了一种便利的方式去创建 WebSecurityConfigurer的实例，只需要重写     WebSecurityConfigurerAdapter 的方法，即可配置拦截什么URL、设置什么权限等安全控制。
@@ -88,35 +74,50 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param http
      * @throws Exception
      */
+//    @Override
+//    protected void configure(final HttpSecurity http) throws Exception {
+//        http.csrf().disable().authorizeRequests()
+//                .anyRequest().permitAll().and()
+//                .formLogin()
+//                .successHandler(
+//                        new AuthenticationSuccessHandler() {
+//                            @Override
+//                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+//                                Gson gson = new Gson();
+//                                ReturnMessages messages = new ReturnMessages(RequestState.SUCCESS, "登录成功。", null);
+//                                response.setContentType("text/json;charset=utf-8");
+//                                response.getWriter().write(gson.toJson(messages));
+//                            }
+//                        }
+//                )
+//                .failureHandler(new AuthenticationFailureHandler() {
+//                    @Override
+//                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+//                        Gson gson = new Gson();
+//                        ReturnMessages messages = new ReturnMessages(RequestState.ERROR, "用户名或密码错误。", null);
+//                        httpServletResponse.setContentType("text/json;charset=utf-8");
+//                        httpServletResponse.getWriter().write(gson.toJson(messages));
+//                    }
+//                })
+//                .and()
+//                .logout().logoutUrl("/logout").permitAll();
+//        http.addFilterBefore(freshFilterSecurityInterceptor, FilterSecurityInterceptor.class);
+//        http.addFilterBefore(new KaptchaAuthenticationFilter("/login","/login?error"),UsernamePasswordAuthenticationFilter.class);
+//    }
+
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                .anyRequest().permitAll().and()
-                .formLogin()
-                .successHandler(
-                        new AuthenticationSuccessHandler() {
-                            @Override
-                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                Gson gson = new Gson();
-                                ReturnMessages messages = new ReturnMessages(RequestState.SUCCESS, "登录成功。", null);
-                                response.setContentType("text/json;charset=utf-8");
-                                response.getWriter().write(gson.toJson(messages));
-                            }
-                        }
-                )
-                .failureHandler(new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-                        Gson gson = new Gson();
-                        ReturnMessages messages = new ReturnMessages(RequestState.ERROR, "用户名或密码错误。", null);
-                        httpServletResponse.setContentType("text/json;charset=utf-8");
-                        httpServletResponse.getWriter().write(gson.toJson(messages));
-                    }
-                })
+        http.authorizeRequests()
+                .antMatchers("/", "/login").permitAll()//设置Spring Security对/和/"login"路径拦截
+                .anyRequest().authenticated()
                 .and()
-                .logout().logoutUrl("/logout").permitAll();
-        http.addFilterBefore(freshFilterSecurityInterceptor, FilterSecurityInterceptor.class);
-        http.addFilterBefore(new KaptchaAuthenticationFilter("/login","/login?error"),UsernamePasswordAuthenticationFilter.class);
+                .formLogin()
+                .loginPage("/login")//设置Spring Security的登入页面访问的路径为/login
+                .defaultSuccessUrl("/hello")//登入成功后转向/chat路径
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
     }
 }
 
